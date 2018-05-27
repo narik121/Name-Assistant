@@ -1,0 +1,223 @@
+<!DOCTYPE>
+
+<html>
+	
+	<head>
+		<title>Deleting  or poping out names not needed</title>
+	</head>
+	
+	<body>
+		<h1>This code executes following functions</h1>
+		
+		<h2>Deleting  or poping out names not needed through splice function</h2>
+		
+		<h3>Learnt</h3>
+		
+		<ol>
+			<li>  Deleting  or poping out names not needed through splice function </li>
+			<li>  Middle Name working </li>
+		</ol>
+		
+		<strong>Name : </strong> <input type = "text" id="name1"/>
+		
+		<button onClick = "myfuntion()">Get Name </button>
+	
+		<p id = "result">Result displayed here</p>
+		<p id="spaces"></p>
+		<p id="PatternResult"> </p>
+	
+		<h3 id="nameSearch"> </h3>
+		
+		<h3>Click to view Developer Stats</h3>
+		<button onClick = "devStats()">Developer Stats</button>
+		<p id="devstats_res"> </p>
+		
+		<h3>Pop Element at index 6, 7, 8 </h3>
+		<button onClick = "splice1()"> Splice 1 </button>
+		
+		<h3>Pop Element at index 7, 8 </h3>
+		<button onClick = "splice2()"> Splice 2 </button>
+		<script>
+		
+			var namesForTest = [];
+		
+			function myfuntion() {
+				
+				var x = document.getElementById('name1').value;
+				var text = x.trim();
+				var name = text.split(" ");
+				
+				var spaces = name.length;
+				document.getElementById("spaces").innerHTML = "Number of words in text : "+spaces;
+				
+				var FirstName = [];
+				var MiddleName = [];
+				var LastName = [];
+				
+				
+				var testCounter=0;
+				
+				var nameSearched = "";
+				switch(spaces) {
+				
+					case 1 : document.getElementById("PatternResult").innerHTML = "Please enter first and last name";
+					break;
+				
+					case 2 : document.getElementById("PatternResult").innerHTML = "Basic Pattern 1";
+					FirstName.push(name[0]);
+					LastName.push(name[1]);
+					document.getElementById("result").innerHTML = "First Name : "+FirstName[0]+"<br/> Last Name : "+LastName[0];
+					
+					nameSearched = basicPattern1(FirstName[0],LastName[0]);
+					document.getElementById("nameSearch").innerHTML = "Names searched : "+nameSearched;
+					break;
+					
+					case 3 : document.getElementById("PatternResult").innerHTML = "Basic Pattern 2";
+					FirstName.push(name[0]);
+					MiddleName.push(name[1]);
+					LastName.push(name[2]);
+					document.getElementById("result").innerHTML = "First Name : "+FirstName[0]+"<br/> Middle Name : "+MiddleName[0]+"<br/> Last Name : "+LastName[0];
+					
+					nameSearched = basicPattern2(FirstName[0],MiddleName[0],LastName[0]);
+					document.getElementById("nameSearch").innerHTML = "Names searched : "+nameSearched;
+					break;
+					
+					case 4 : document.getElementById("PatternResult").innerHTML = "Advance pattern 1 - Eg: John Edward Gonzalez Smith";
+					FirstName.push(name[0]);
+					
+					MiddleName.push(name[1]);
+					MiddleName.push(name[2]);
+					
+					LastName.push(name[2]);
+					LastName.push(name[3]);
+					LastName.push(name[2]+"-"+name[3]);
+					
+					document.getElementById("result").innerHTML = "First Name : "+FirstName[0]+
+					"<br/>Possible Middle Names : "+MiddleName[0]+
+					", "+MiddleName[1]+
+					"<br/> Possible Last Names : "+LastName[0]+
+					", "+LastName[1]+
+					", "+LastName[2];
+					break;
+					
+					case 5 : document.getElementById("PatternResult").innerHTML = "Advance pattern 2 - Eg: John Mark Edward Gonzalez Smith";
+					FirstName.push(name[0]);
+					
+					MiddleName.push(name[1]);
+					MiddleName.push(name[2]);
+					MiddleName.push(name[1]+"-"+name[2]);
+					
+					LastName.push(name[3]);
+					LastName.push(name[4]);
+					LastName.push(name[3]+"-"+name[4]);
+					
+					document.getElementById("result").innerHTML = "First Name : "+FirstName[0]+
+					"<br/>Possible Middle Names : "+MiddleName[0]+
+					", "+MiddleName[1]+
+					", "+MiddleName[2]+
+					"<br/> Possible Last Names : "+LastName[0]+
+					", "+LastName[1]+
+					", "+LastName[2];
+					
+					break;
+				}
+				
+				function basicPattern1(fn,ln) {
+				
+				var fn = fn;
+				var ln = ln;
+				
+				return fn+" "+ln+";";
+					
+				}
+				
+				function basicPattern2(fn,mn,ln) {
+				
+				var fn = fn;
+				var mn = mn;
+				var ln = ln;
+				var middleInitialOnly = false;
+				var midd_temp="";
+			//Checking for middle name or middle initial
+			
+				var re1 = /^\w$/;
+				var res_reg = re1.test(mn);
+				if(res_reg) {
+					middleInitialOnly = true;
+				}
+			
+				var res1 = basicPattern1(fn,ln);
+				namesForTest.push(res1);
+				
+				if (!middleInitialOnly) {
+					var middleInitial_regx  = /^\w/;
+					var middleInitial = middleInitial_regx.exec(mn);
+					midd_temp = fn+" "+middleInitial+" "+ln;
+					namesForTest.push(midd_temp);
+				}
+				
+				var res_temp = fn+" "+mn+" "+ln;
+				var res2 = res1+" "+midd_temp+" "+fn+" "+mn+" "+ln+"; ";
+						
+				namesForTest.push(res_temp);
+				return res2;
+					
+				}
+				
+				var names = [];
+				
+				counter = 0;
+				if(spaces > 3){
+				
+					var tempX;
+					
+					for (var i = 0; i < FirstName.length; i++) {
+						for (var j = 0; j < MiddleName.length; j++) {
+							for(var k = 0; k< LastName.length; k++) {
+								tempX = basicPattern2(FirstName[i],MiddleName[j],LastName[k]);
+								names[counter++] = tempX;
+								
+								
+							}
+						}
+					}
+					
+					for (var z = 0; z<names.length; z++) {
+						nameSearched += names[z];
+					}
+					document.getElementById("nameSearch").innerHTML = "Names searched : "+nameSearched;
+				}
+				
+				function devStats() {
+					var temp = "";
+					for (var g=0;g<names.length;g++){
+						temp += names[g]+" at index "+g+"<br/>";
+					}
+					
+					document.getElementById("devstats_res").innerHTML = temp;
+				}
+			}
+			
+			function devStats() {
+					var temp = "";
+					for (var g=0;g<namesForTest.length;g++){
+						temp += namesForTest[g]+" at index "+g+"<br/>";
+					}
+					
+					document.getElementById("devstats_res").innerHTML = temp;
+				}
+				
+			function splice1() {
+				namesForTest.splice(9,3);
+				devStats();
+			}
+			
+			function splice2() {
+				namesForTest.splice(12,3);
+				devStats();
+			}
+				
+		</script>
+	</body>
+	
+</html>
