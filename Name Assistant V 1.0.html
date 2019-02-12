@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Name Assistant 1.0</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+<h1> Name Assistant </h1>
+
+<div class="row">
+<div class="col-md-4">Last Name <input class="form-control input-lg" type="text" name="txtJob" id="lastName" > </div>
+<div class="col-md-4">Fist Name <input class="form-control input-lg" type="text" name="txtJob" id="firstName" > </div>
+<div class="col-md-4">Middle Name <input class="form-control input-lg" type="text" name="txtJob" id="middleName" > </div>
+</div>
+<br>
+<div class="row">
+ <div class="col-sm-12 col-sm-offset-5"><button type="button" class="btn btn-success btn-lg" onclick="getName()">Compute</button> </div>
+</div>
+
+ <br>
+ <h4>Note : There can only be one middle name. Add additional middle names to begining of last name</h4>
+ <br>
+ <br>
+ <p style="font-size: 25px" id = "result"> </p>
+ 
+ <br>
+  <button type="button" class="btn btn-info btn-lg" onclick="client()">12580 Client</button> <br>
+ 
+ <p> Maximum two Last names and two First names </p>
+</div>
+<script>
+var mainResult;
+function getName(){
+var lastName = document.getElementById("lastName").value.replace(/^\s+|\s+$/g, "");
+lastName = lastName.replace("-", " ");
+var firstName = document.getElementById("firstName").value.replace(/^\s+|\s+$/g, "");
+firstName = firstName.replace("-", " ");
+
+var middleName = document.getElementById("middleName").value.replace(/^\s+|\s+$/g, "");
+middleName = middleName.replace("-", " ");
+
+//console.log(lastName+", "+firstName+" "+middleName);
+
+var lastNameArray = lastName.split(" ");
+
+for (let z = 0; z < lastNameArray.length; z++) {
+	lastNameArray[z] = lastNameArray[z].toLowerCase();
+    let tempFirstLetter = lastNameArray[z].charAt(0);
+	let upperCaseOfFirstWord = lastNameArray[z].charAt(0).toUpperCase();
+    lastNameArray[z] = lastNameArray[z].replace(tempFirstLetter, upperCaseOfFirstWord);
+}
+if(lastNameArray.length > 1) {
+
+	lastNameArray[lastNameArray.length] = lastNameArray[0]+ " " +lastNameArray[1];
+}
+var middleNameArray = middleName.split(" ");
+
+for (let z = 0; z < middleNameArray.length; z++) {
+	middleNameArray[z] = middleNameArray[z].toLowerCase();
+    let tempFirstLetter = middleNameArray[z].charAt(0);
+	let upperCaseOfFirstWord = middleNameArray[z].charAt(0).toUpperCase();
+    middleNameArray[z] = middleNameArray[z].replace(tempFirstLetter, upperCaseOfFirstWord);
+}
+var firstNameArray = firstName.split(" ");
+
+for (let z = 0; z < firstNameArray.length; z++) {
+	firstNameArray[z] = firstNameArray[z].toLowerCase();
+    let tempFirstLetter = firstNameArray[z].charAt(0);
+	let upperCaseOfFirstWord = firstNameArray[z].charAt(0).toUpperCase();
+    firstNameArray[z] = firstNameArray[z].replace(tempFirstLetter, upperCaseOfFirstWord);
+}
+if(firstNameArray.length > 1) {
+
+	firstNameArray[firstNameArray.length] = firstNameArray[0]+ " " +firstNameArray[1];
+}
+
+//console.log(lastNameArray);
+//console.log(middleNameArray);
+//console.log(firstNameArray);
+
+
+var Result = "";
+for(i=0;i<firstNameArray.length;i++){
+	for(j=0;j<middleNameArray.length;j++){
+  	for(k=0;k<lastNameArray.length;k++){
+    	runMyResult(firstNameArray[i],middleNameArray[j],lastNameArray[k]);
+    // console.debug(middlename[0]);
+    }
+  }
+}
+
+function runMyResult(fn,mn,ln){
+	if(mn!==ln) {
+  	
+  //console.log(mn);
+  var patt = /^\w{1}/g;
+  
+  var mi = mn.match(patt);
+ // console.debug(mi);
+  
+ //console.debug(fn+" "+ln);
+ Result = Result + fn + " " + ln +"; ";
+//console.debug(fn+" "+mi+" "+ln);
+if(mi !== null) {
+Result = Result + fn + " " + mi + " " + ln +"; ";
+// console.debug(fn+" "+mn+" "+ln);
+if(mn.charAt(1) !== "") {
+Result = Result + fn + " " + mn + " " + ln +";<br>";
+				}
+            }
+		}
+  }
+  document.getElementById("result").innerHTML = Result;
+  //console.debug(firstname);
+  mainResult = Result;
+
+}
+
+var client_12580 = false;
+
+function client() {
+	if(!client_12580) {
+	var temp = document.getElementById("result").innerHTML;
+        var stemp = temp.toUpperCase();
+        document.getElementById("result").innerHTML = stemp;
+    	client_12580 = true;
+    }
+    else {
+    	document.getElementById("result").innerHTML = mainResult;
+        client_12580 = false;
+  }
+ }
+</script>
+</body>
+</html>
+
